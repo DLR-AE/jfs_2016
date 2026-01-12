@@ -152,7 +152,7 @@ def aero_force(para):
                          [0,0,0, 0,0,0, 0,0,0, 0,1., 0]])
 
     # Aerodynamic forces
-    L0 = 0.5*rho*W0**2*CL0(alpha0) # steady state lift
+    L0 = 0.5*rho*W0**2*c*CL0(alpha0) # steady state lift
     L1 = rho*W0*W1*c*CL0(alpha0)+0.5*rho*W0**2*c*dCL*alpha1E \
        + rho*np.pi*c**2/4.*(np.array([0,-1.,(.25*c-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # lift variation
     D1 = rho*W0*W1*c*CD0(alpha0)+L0*(-alpha1E) # drag variation
