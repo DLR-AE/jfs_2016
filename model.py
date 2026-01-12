@@ -156,6 +156,7 @@ def aero_force(para):
     L1 = rho*W0*W1*c*CL0(alpha0)+0.5*rho*W0**2*c*dCL*alpha1E \
        + rho*np.pi*c**2/4.*(np.array([0,-1.,(.25*c-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # lift variation
     D1 = rho*W0*W1*c*CD0(alpha0)+L0*(-alpha1E) # drag variation
+    D1 += L0 * np.array([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0])
     M1 = rho*W0*W1*c*CM0(alpha0) \
        - rho*np.pi*c**3/8.*(np.array([0,-.5,.5*(3.*c/8.-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # moment variation
     Q = np.vstack((-D1, L1, M1+e_ac*L1)) # aerodynamic force vector
