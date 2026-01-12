@@ -64,7 +64,7 @@ def structure(para):
 
     # Define mass and stiffness matrix
     M = np.array([[m, 0, 0],[0, m, -m*e_cg],[0,-m*e_cg, m*(e_cg**2+r**2)]])
-    K = np.array([[m*wx**2, 0, 0],[0, m*wy**2, 0],[0, 0, m*r**2*wz**2]])
+    K = np.array([[m*wx**2, 0, 0],[0, m*wy**2, 0],[0, 0, m*(e_cg**2+r**2)*wz**2]])
     K[0,2] = K[2,0] = -gam_x*np.sqrt(K[0,0]*K[2,2]) # edge-twist coupling term
     K[1,2] = K[2,1] = -gam_y*np.sqrt(K[1,1]*K[2,2]) # flap-twist coupling term
 
