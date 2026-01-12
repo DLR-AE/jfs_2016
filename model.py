@@ -153,17 +153,18 @@ def aero_force(para):
 
     # Aerodynamic forces
     L0 = 0.5*rho*W0**2*c*CL0(alpha0) # steady state lift
-    L1 = rho*W0*W1*c*CL0(alpha0)+0.5*rho*W0**2*c*dCL*alpha1E \
-       + rho*np.pi*c**2/4.*(np.array([0,-1.,(.25*c-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # lift variation
+    L1_circ = rho*W0*W1*c*CL0(alpha0)+0.5*rho*W0**2*c*dCL*alpha1E # circulatory lift variation
+    L1_non_circ = rho*np.pi*c**2/4.*(np.array([0,-1.,(.25*c-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # non-circulatory lift variation
     D1 = rho*W0*W1*c*CD0(alpha0)+L0*(np.array([0, 0, 0, 0, 0, (c / 2.) * U0 / W0 ** 2, 0, 0, 0, 0, 0, 0]) - alpha1E) # drag variation
     D1 += L0 * np.array([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0])
     M1 = rho*W0*W1*c*CM0(alpha0) \
        - rho*np.pi*c**3/8.*(np.array([0,-.5,.5*(3.*c/8.-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # moment variation
-    Q = np.vstack((-D1, L1, M1+e_ac*L1)) # aerodynamic force vector
+    Q = np.vstack((-D1, L1_circ, M1+e_ac*(L1_circ+L1_non_circ))) # aerodynamic force vector
     T = np.array([[ np.cos(alpha0), np.sin(alpha0), 0.],
                   [-np.sin(alpha0), np.cos(alpha0), 0.],
                   [             0.,              0., 1.]]) # rotation matrix
     Q = np.dot(T,Q) # Rotate forces into chord coordinates
+    Q[1, :] += L1_non_circ
 
     return Q, aero, alphas, para
 
