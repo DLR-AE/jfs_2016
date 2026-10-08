@@ -180,8 +180,8 @@ def ssm(para):
     A[3:6,3:6] = np.identity(3) 
     A[:3,:] = np.dot(np.linalg.inv(S[:,:3]-Q[:,:3]),A[:3,:]) # invert mass matrix to identity
     for i in range(3): # eliminate mass matrix of aerodynamic model
-        A[6,:] -= A[6,i]*A[i,:]
-        A[7,:] -= A[7,i]*A[i,:]
+        A[6,:] += A[6,i]*A[i,:]
+        A[7,:] += A[7,i]*A[i,:]
     B = A[:,11:] # input matrix
     A = A[:, 3:11] # system matrix
 
