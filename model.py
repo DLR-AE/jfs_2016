@@ -123,10 +123,12 @@ def aero_force(para):
         dCL = 2*np.pi 
         CD0 = lambda alpha: 0.
         CM0 = lambda alpha: 0.
+        alphaL0 = 0
     else:            
-        dCL = 7.15 
-        CD0 = lambda alpha:  .01
-        CM0 = lambda alpha: -.1
+        dCL = 6.60
+        CD0 = lambda alpha:  .013
+        CM0 = lambda alpha: -.31
+        alphaL0 = np.deg2rad(-2.7)
     CL0 = lambda alpha: dCL*alpha
 
     # Inflow velocities
@@ -152,8 +154,8 @@ def aero_force(para):
                          [0,0,0, 0,0,0, 0,0,0, 0,1., 0]])
 
     # Aerodynamic forces
-    L0 = 0.5*rho*W0**2*c*CL0(alpha0) # steady state lift
-    L1_circ = rho*W0*W1*c*CL0(alpha0)+0.5*rho*W0**2*c*dCL*alpha1E # circulatory lift variation
+    L0 = 0.5*rho*W0**2*c*CL0(alpha0-alphaL0) # steady state lift
+    L1_circ = rho*W0*W1*c*CL0(alpha0-alphaL0)+0.5*rho*W0**2*c*dCL*alpha1E # circulatory lift variation
     L1_non_circ = rho*np.pi*c**2/4.*(np.array([0,-1.,(.25*c-e_ac), 0,0,W0, 0,0,0, 0,0, 0])) # non-circulatory lift variation
     D1 = rho*W0*W1*c*CD0(alpha0)+L0*(np.array([0, 0, 0, 0, 0, (c / 2.) * U0 / W0 ** 2, 0, 0, 0, 0, 0, 0]) - alpha1E) # drag variation
     D1 += L0 * np.array([0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0])
